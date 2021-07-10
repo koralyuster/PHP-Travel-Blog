@@ -31,21 +31,49 @@ if (isset($_POST['submit'])) {
     $errors["password"] = "* Enter Valid Password, Min 3 Chars";
   }
 
-  if ($formValid) {
-    //Password encryption:
-    $password = password_hash($password, PASSWORD_BCRYPT);
-
-    $query = "INSERT INTO users(name,email,password) VALUES('{$name}','{$email}','{$password}')";
-    $result = $conn->query($query);
-    if ($conn->insert_id > 0) {
-      echo "success";
-      //msg=success-> will be write in the url also that signup success
-      header("location: login.php?success=ok");
-    } else {
-      $errors["email2"] = "* Email is exist in system, try again or login.";
+  if (isset($_FILES['myFile']) && $_FILES['myFile']['error'] == 0) {
+    $max_file_size = 5 * 1024 * 1024;
+    if ($_FILES['myFile']['size'] > $max_file_size) {
+      $formValid = false;
+      $error['file_max'] = '* File too big, maximum 5 mb.';
+    }
+    $ex = ['png', 'jpg', 'gif', 'svg', 'jpeg'];
+    $fileInfo = pathinfo($_FILES['myFile']['name']);
+    if (!in_array(strtolower($fileInfo['extension']), $ex)) {
+      $formValid = false;
+      $errors['file_type'] = '* File must be picture like, jpg, png, gif or svg';
     }
   }
 }
+
+if ($formValid) {
+  //Password encryption:
+  $password = password_hash($password, PASSWORD_BCRYPT);
+
+  $query = "INSERT INTO users(name,email,password) VALUES('{$name}','{$email}','{$password}')";
+  $result = $conn->query($query);
+  if ($conn->insert_id > 0) {
+    echo "success";
+
+    //upload file:
+    if (isset($_FILES['myFile']) && $_FILES['myFile']['error'] == 0) {
+      $fileInfo = pathinfo($_FILES['myFile']['name']);
+      //to connect the id to the user_id veribale:
+      $user_id = $conn->insert_id;
+      //connect file: 
+      $fileName = "user_images/" . $user_id . "." . $fileInfo['extension'];
+      move_uploaded_file($_FILES['myFile']['tmp_name'], $fileName);
+      //update the table of the user:
+      $query_edit = "UPDATE users SET img = '{$fileName}' WHERE id = '{$user_id}'";
+      $result_edit = $conn->query($query_edit);
+    }
+    //msg=success-> will be write in the url also that signup success
+    header("location: login.php?success=ok");
+  } else {
+    $errors["email2"] = "* Email is exist in system, try again or login.";
+  }
+}
+
 
 ?>
 
@@ -57,7 +85,7 @@ if (isset($_POST['submit'])) {
     <h1>Sign Up And Join Us Now!</h1>
     <p>join us and take part of post posts in our blog.</p>
 
-    <form method="POST" class="col-lg-6 shadow p-3">
+    <form method="POST" class="col-lg-6 shadow-sm p-3" enctype="multipart/form-data">
 
       <div>
         <label>Name:</label>
@@ -80,9 +108,20 @@ if (isset($_POST['submit'])) {
 
       <div>
         <label>Password:</label>
-        <input value="<?= old("password") ?>" type="text" name="password" class="form-control">
+        <input value="<?= old("password") ?>" type="password" name="password" class="form-control">
         <small class="text-danger">
           <?= isset($errors['password']) ? $errors['password'] : ''; ?>
+        </small>
+      </div>
+
+      <div>
+        <label>Your profile image(avater):</label>
+        <input class="form-control" type="file" name="myFile">
+        <small class="text-danger">
+          <?= isset($errors['file_max']) ? $errors['file_max'] : ''; ?>
+        </small>
+        <small class="text-danger">
+          <?= isset($errors['file_type']) ? $errors['file_type'] : ''; ?>
         </small>
       </div>
 

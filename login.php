@@ -44,6 +44,8 @@ if (isset($_POST['submit'])) {
         //SESSION for the system recognize the user:
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];
+        //strlen($user['img_url']) > 10 -> check if the length of the image bigger than 10, because if not the database could think this is empty string and the default image will present.
+        $_SESSION['user_img'] = isset($user["img"]) && strlen($user['img']) > 10 ? $user["img"] : "https://cdn.pixabay.com/photo/2014/09/27/13/46/question-mark-463497_960_720.jpg";
         //keep the ip of user:
         $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
         //keep the browser that the user login from:
@@ -96,7 +98,7 @@ if (isset($_POST['submit'])) {
 
         <div>
           <lable>Password:</lable>
-          <input type="text" name="password" class="form-control">
+          <input type="password" name="password" class="form-control">
           <small class="text-danger">
             <?= isset($errors['password']) ? $errors['password'] : ""; ?>
           </small>

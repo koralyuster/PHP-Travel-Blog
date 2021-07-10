@@ -1,3 +1,3 @@
-<footer class="container-fluid text-center">
+<footer class="container text-center p-2">
   this is footer
 </footer>

@@ -25,6 +25,7 @@ $user = user_verify();
           <a href="myPosts.php" class="text-white me-2">Your Posts</a>
           <a href="logout.php" class="text-danger me-2">Logout</a>
           <!-- img profil will be here -->
+          <div style="float:right; width:32px; height: 32px; background-image:url(<?= $_SESSION["user_img"] ?>); background-size:cover; background-position:center; border-radius:50%;"></div>
         <?php endif; ?>
         <?php if (!$user) : ?>
           <a href="signup.php" class="text-white me-2">Sign up</a>

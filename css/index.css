@@ -1,0 +1,31 @@
+figcaption {
+  position: absolute;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  font-size: 4rem;
+  font-family: 'Courgette',
+    cursive;
+  width: 100%;
+}
+
+.imgHome {
+  width: 200vw;
+  height: 400px;
+  object-fit: cover;
+  object-position: 20% 55%;
+}
+
+@media screen and (max-width: 750px) {
+  .imgHome {
+    width: 500px;
+    height: 300px;
+    object-fit: scale-down;
+    object-position: 50% 50%;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  figcaption {
+    font-size: 2rem;
+  }
+}
