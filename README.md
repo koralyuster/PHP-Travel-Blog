@@ -13,6 +13,24 @@ What does the project include,
 * When registering, the site allows the user to upload a user profile picture.
 * Only registered users can add a favorite recipe to favorites but also remove a recipe from favorites.
 
+<!-- USAGE EXAMPLES -->
+## Sample User Login
+
+There is a user ready for those who do not want to register 🙂
+
+```sh
+    email: demo@gmail.com
+    password: 12345
+   ```
+
+### structure
+![image](https://user-images.githubusercontent.com/70564042/125169289-22d8e480-e1b2-11eb-9df1-b3cde6dc4c7c.png)
+
+### Database structure
+![image](https://user-images.githubusercontent.com/70564042/125169310-44d26700-e1b2-11eb-8910-37d84828bfa2.png)
+
+
+
 ### Built With
 
 This project using Php and SQL.<br>
